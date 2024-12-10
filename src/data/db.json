@@ -1,0 +1,88 @@
+{
+  "listings": [
+    {
+      "id": 1,
+      "title": "Cozy Apartment in City Center",
+      "price": 120,
+      "location": "New York",
+      "image": "/images/apartment1.jpg"
+    },
+    {
+      "id": 2,
+      "title": "Luxury Villa with Pool",
+      "price": 300,
+      "location": "Los Angeles",
+      "image": "/images/villa1.jpg"
+    },
+    {
+      "id": 3,
+      "title": "Cozy Apartment in City Center",
+      "price": 120,
+      "location": "New York",
+      "image": "/images/apartment1.jpg"
+    },
+    {
+      "id": 4,
+      "title": "Luxury Villa with Pool",
+      "price": 300,
+      "location": "Los Angeles",
+      "image": "/images/villa1.jpg"
+    },
+    {
+      "id": 5,
+      "title": "Cozy Apartment in City Center",
+      "price": 120,
+      "location": "New York",
+      "image": "/images/apartment1.jpg"
+    },
+    {
+      "id": 6,
+      "title": "Luxury Villa with Pool",
+      "price": 300,
+      "location": "Los Angeles",
+      "image": "/images/villa1.jpg"
+    },
+    {
+      "id": 7,
+      "title": "Cozy Apartment in City Center",
+      "price": 120,
+      "location": "New York",
+      "image": "/images/apartment1.jpg"
+    },
+    {
+      "id": 8,
+      "title": "Luxury Villa with Pool",
+      "price": 300,
+      "location": "Los Angeles",
+      "image": "/images/villa1.jpg"
+    },
+    {
+      "id": 9,
+      "title": "Cozy Apartment in City Center",
+      "price": 120,
+      "location": "New York",
+      "image": "/images/apartment1.jpg"
+    },
+    {
+      "id": 10,
+      "title": "Luxury Villa with Pool",
+      "price": 300,
+      "location": "Los Angeles",
+      "image": "/images/villa1.jpg"
+    },
+    {
+      "id": 11,
+      "title": "Cozy Apartment in City Center",
+      "price": 120,
+      "location": "New York",
+      "image": "/images/apartment1.jpg"
+    },
+    {
+      "id": 12,
+      "title": "Luxury Villa with Pool",
+      "price": 300,
+      "location": "Los Angeles",
+      "image": "/images/villa1.jpg"
+    }
+  ]
+}
