@@ -5,6 +5,8 @@ const listingSlice = createSlice({
   initialState: {
     listings: [], // Array of all listings
     favorites: [], // List of favorite listings
+    // currentListing: null, // Current listing being viewed needs to work on this
+   
   },
   reducers: {
     setListings(state, action) {
@@ -26,9 +28,9 @@ const listingSlice = createSlice({
       state.listings.push(action.payload); 
     },
     updateListing(state, action) {
-      const { id, updatedDetails } = action.payload;
+      const { id, placeData } = action.payload;
       const index = state.listings.findIndex((listing) => listing.id === id);
-      if (index !== -1) state.listings[index] = { ...state.listings[index], ...updatedDetails };
+      if (index !== -1) state.listings[index] = { ...state.listings[index], ...placeData };
     },
     deleteListing(state, action) {
       state.listings = state.listings.filter(

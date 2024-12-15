@@ -8,6 +8,8 @@ import { store } from './Redux/store';
 import { SearchProvider } from './context/SearchContext';
 import {ToastContainer, Slide} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
+
 import './App.css';
 
 
@@ -24,3 +26,4 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     </Provider>
   </React.StrictMode>,
 );
+

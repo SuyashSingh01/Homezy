@@ -18,27 +18,31 @@ const SignupPage = () => {
     } = useForm();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    console.log("token-before",token);
 
-    console.log("signupformuserbefore", user);
     const handleFormSubmit = async (formData) => {
         console.log("signupformdata", formData);
+        dispatch(setLoading(true));
         if(formData.password !== undefined && formData.password !== formData.confirmpassword){
             toast.error("Password and Confirm Password should be same");
             return ;
         }
-        dispatch(setLoading(true));
         // backend call to handle form data
         try{
             const result=await createUserWithEmailAndPassword(auth, formData.email, formData.password);
             console.log("signupformResult", result);
+            const userDetails = {
+                name: formData.name,
+                email: formData.email,
+                uid: result?.user?.uid,
+            };
             dispatch(setToken(result?.user?.accessToken));
-            // dispatch(setUserData(result?.user));
+            dispatch(setUserData(userDetails));
+
             localStorage.setItem("token", JSON.stringify(result?.user?.accessToken));
-            localStorage.setItem("user", JSON.stringify(result?.user));
+            localStorage.setItem("user", JSON.stringify(userDetails));
             if (isSubmitSuccessful) reset();
             toast.success(`Account Created ${result.user.email}`);
-      
+            console.log('uid',user?.uid);
             navigate("/account");
           }
           catch(error){

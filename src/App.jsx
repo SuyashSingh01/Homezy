@@ -4,31 +4,35 @@ import Layout from './components/Layout';
 import HomePage from './pages/HomePage';
 import SignupPage from './pages/SignupPage';
 import LoginPage from './pages/LoginPage';
+import PrivateRoute from './components/PrivateRoute.jsx';
 import ProfilePage from './pages/ProfilePage';
-import AllPlacesPage from './pages/AllPlacesPage.jsx';
+import HostedPlaces from './pages/HostedPlaces.jsx';
 import BookingsPage from './pages/BookingsPage.jsx';
 import HostPlacesFormPage from './pages/HostPlacesFormPage.jsx';
-import SinglePlacePage from './pages/SinglePlacePage.jsx';
 import SingleBookedPlace from './pages/SingleBookedPlace.jsx';
 import NotFoundPage from './pages/NotFoundPage';
+import PlaceDetail from './components/PlaceDetail.jsx';
+import ConfirmAndPay from './pages/ConfirmAndPay.jsx';
+import FavouritePlaces from './pages/FavouritePlaces.jsx';
 
 function App() {
 
-  return (<>
-      <div className='text-cyan-600 text-3xl font-extrabold hover:bg-slate-600' >HELLO</div>
+  return (
+    <>
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<SignupPage />} />
-        <Route path="/account" element={<ProfilePage />} />
-        <Route path="/place/:id" element={<SinglePlacePage />} />
-        <Route path="/account/places" element={<AllPlacesPage />} />
-        <Route path="/account/places/new" element={<HostPlacesFormPage />} />
-        <Route path="/account/places/:id" element={<HostPlacesFormPage />} />
-        <Route path="/account/bookings" element={<BookingsPage />} /> 
-        <Route path="/account/bookings/:id" element={<SingleBookedPlace />}
-        />
+        <Route path="/place/:id" element={<PlaceDetail />} />
+        <Route path="/account" element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
+        <Route path="/account/liked-place" element={<PrivateRoute><FavouritePlaces/></PrivateRoute>} />
+        <Route path="/account/places" element={<PrivateRoute><HostedPlaces /></PrivateRoute>} />
+        <Route path="/account/places/new" element={<PrivateRoute><HostPlacesFormPage/></PrivateRoute>} />
+        <Route path="/account/places/:id" element={<PrivateRoute><HostPlacesFormPage /></PrivateRoute>} />
+        <Route path="/account/bookings" element={<PrivateRoute><BookingsPage /></PrivateRoute>} />
+        <Route path="/account/bookings/:id" element={<PrivateRoute><SingleBookedPlace /></PrivateRoute>}/>
+        <Route path="/account/bookings/:id/confirm-pay" element={<PrivateRoute><ConfirmAndPay/></PrivateRoute>} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>

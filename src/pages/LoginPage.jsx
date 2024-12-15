@@ -9,7 +9,7 @@ import Spinner from '../components/Spinner';
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
-  const { loading } = useSelector(state => state.auth);
+  const { loading ,user} = useSelector(state => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -34,15 +34,23 @@ const Login = () => {
     dispatch(setLoading(true));
     try {
       const response = await signInWithEmailAndPassword(auth, formData.email, formData.password);
-      console.log("Loginresponseresponse: ", response);
+      console.log("Loginresponseresponse: ", response?.user);
 
+      const userDetails = {
+        name: response?.user?.name,
+        email: formData.email,
+        uid: result?.user?.uid,
+    };
       dispatch(setToken(response?.user?.refreshToken));
-      dispatch(setUserData(response?.user));
+
+      dispatch(setUserData(userDetails));
       setFormData({ email: "", password: "" });
       localStorage.setItem("token", JSON.stringify(response.user?.refreshToken));
-      localStorage.setItem("user", JSON.stringify(response.user));
+      localStorage.setItem("user", JSON.stringify(userDetails));
       toast.success(`Login Success:${response.user.email}`);
+      console.log('uid',user);
       navigate("/account");
+      
 
       // clear the form data
     }
