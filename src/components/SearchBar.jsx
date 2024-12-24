@@ -1,8 +1,8 @@
 import React ,{useContext} from 'react';
-import { SearchContext } from '../context/SearchContext';
+import { ListingsContext} from '../context/ListingsContext';
 
 const SearchBar = () => {
-const {searchItem,handleSearch,setSearchItem}=useContext(SearchContext);
+const {searchItem,setSearchItem}=useContext(ListingsContext);
 
   return (
     <>
@@ -19,7 +19,6 @@ const {searchItem,handleSearch,setSearchItem}=useContext(SearchContext);
         <div className="bg-blue flex cursor-pointer  items-center bg-primary text-white">
           <button
             className="flex rounded-r-full bg-primary py-2 px-4 md:p-2"
-            onClick={handleSearch}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -35,7 +34,7 @@ const {searchItem,handleSearch,setSearchItem}=useContext(SearchContext);
                 d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
               />
             </svg>
-            <span className="ml-1 hidden md:block">Search</span>
+            <span className="ml-1 hidden md:block" >Search</span>
           </button>
         </div>
       </div>

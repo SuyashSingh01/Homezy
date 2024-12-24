@@ -1,40 +1,21 @@
 // import useFetch from '../utility/useFetch';
 import Spinner from '../components/Spinner';
 import SingleCard from '../components/PlaceCard';
-import { useDispatch, useSelector } from 'react-redux';
-import { setListings } from '../Redux/slices/ListingSlice';
-import { SearchContext } from '../context/SearchContext';
-import { useState ,useEffect} from 'react';
-import { setLoading } from '../Redux/slices/AuthSlice';
-import axios from 'axios';
-
+import {useSelector } from 'react-redux';
+import { ListingsContext } from '../context/ListingsContext';
+import { useContext } from 'react';
 
 const HomePage = () => {
+
   const ApiUrl = "https://jsonplaceholder.typicode.com/posts"; // Mock API URL
-  const dispatch = useDispatch();
-  const [listingdata, setlistingData] = useState([]);
+  // const { data,error } = useFetch(ApiUrl); // Fetch data
   // Access loading state from Redux
   const { loading } = useSelector((state) => state.auth);
-  const listings =listingdata;
+  // const {listings }=useSelector((state)=>state.listings);
 
-  // const { data,error } = useFetch(ApiUrl); // Fetch data
+  const { listingData,searchItem }=useContext(ListingsContext);
+  const listings= [...listingData];
 
-  const fetchedListingData = async () => {
-    dispatch(setLoading(true));
-    try {
-      const response = await axios.get('http://localhost:3001/listings');
-      console.log("data->", response.data);
-      setlistingData(response.data);
-      dispatch(setListings(data));
-    } catch (e) {
-      console.log(e);
-    }
-    dispatch(setLoading(false));
-  }
-  useEffect(() =>{
-      fetchedListingData();
-      // dispatch(setListings(listingdata));
-  }, []);
   console.log("listingdata", listings);
 
   if (loading) {
@@ -46,9 +27,18 @@ const HomePage = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 justify-items-center py-32 px-4 md:grid-cols-2 md:gap-0 lg:grid-cols-3 lg:gap-2 xl:grid-cols-4 xl:gap-10">
+    <div className="grid grid-cols-1 justify-items-center py-32 px-4 md:grid-cols-2 md:gap-4 lg:grid-cols-3 xl:grid-cols-4 xl:gap-10">
       {listings && listings.length > 0 ? (
-        listings.map((place, index) => <SingleCard place={place} key={index} />)
+        listings.filter(
+          (val) => {
+            console.log(val)
+            if (searchItem === "") {
+              return val;
+            } else if (val.title.toLowerCase().includes(searchItem.toLowerCase())) {
+              return val;
+            }
+          }
+        ).map((place, index) => <SingleCard place={place} key={index} />)
       ) : (
         <div className="absolute left-1/2 right-1/2 top-40 flex  w-full -translate-x-1/2 transform flex-col p-10  md:w-1/2">
           <h1 className="text-3xl font-semibold">Result not found!</h1>

@@ -8,7 +8,7 @@ const PlaceGallery = ({place}) => {
 
   if (showAllPhotos) {
     return (
-      <div className="fixed inset-0 z-20 overflow-auto bg-white text-white">
+      <div className=" overflow-auto bg-white text-white">
         <div className="grid gap-4 bg-white px-2 py-20 md:p-8">
           <div>
             <button

@@ -142,7 +142,7 @@ function ProfilePage() {
                     placeholder="Enter role"
                   />
                 </FormControl>
-                <FormControl sx={{ flexGrow: 1 }}>
+                {/* <FormControl sx={{ flexGrow: 1 }}>
                   <FormLabel>Add Secondary Email</FormLabel>
                   <Input
                     size="sm"
@@ -152,7 +152,7 @@ function ProfilePage() {
                     onChange={(e) => setEmail(e.target.value)}
                     value={email}
                   />
-                </FormControl>
+                </FormControl> */}
               </Stack>
               <FormControl>
                 <FormLabel>Timezone</FormLabel>

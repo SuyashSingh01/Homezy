@@ -83,7 +83,7 @@ const BookingWidget = ({ place }) => {
   };
 
   return (
-    <div className="rounded-2xl bg-white p-4 shadow-xl">
+    <div className=" rounded-2xl bg-white py-8 shadow-xl">
       <div className="text-center text-xl">
         Price: <span className="font-semibold">₹{place.price}</span> / per night
       </div>

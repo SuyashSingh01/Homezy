@@ -2,31 +2,32 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import Perks from '../components/PerksWidget.jsx';
 import Spinner from '../components/Spinner';
 import MultiplePhotosUploader from './MultiplePhotosUploader.jsx';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addListing, updateListing } from '../Redux/slices/ListingSlice.js';
 
 const HostPlacesFormPage = () => {
   const { id } = useParams();
+  const {place}=useLocation();
   const [loading, setLoading] = useState(false);
   const [fileList, setFileList] = useState([]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  // const { listings } = useSelector((state) => (state.listings));  // use the listings in redux store
 
   const [formData, setFormData] = useState({
-    title: '',
-    address: '',
-    description: '',
-    perks: [],
-    extraInfo: '',
-    checkIn: '',
-    checkOut: '',
-    maxGuests: 10,
-    price: 500,
+    title: place?.title  || '',
+    address: place?.address || '',
+    description: place?.description || '',
+    perks: place?.perks || [],
+    extraInfo: place?.extraInfo || '',
+    maxGuests: place?.maxGuests || 2,
+    price: place?.price || 1,
   });
+
 
   const {
     title,
@@ -34,23 +35,21 @@ const HostPlacesFormPage = () => {
     description,
     perks,
     extraInfo,
-    checkIn,
-    checkOut,
     maxGuests,
     price,
   } = formData;
 
   const isValidPlaceData = () => {
-    if (title.trim() === '') {
+    if (title?.trim() === '') {
       toast.error("Title can't be empty!");
       return false;
-    } else if (address.trim() === '') {
+    } else if (address?.trim() === '') {
       toast.error("Address can't be empty!");
       return false;
-    } else if (fileList.length < 5) {
-      toast.error('Upload at least 5 photos!');
+    } else if (fileList?.length < 1) {
+      toast.error('Upload at least 1 photos!');
       return false;
-    } else if (description.trim() === '') {
+    } else if (description?.trim() === '') {
       toast.error("Description can't be empty!");
       return false;
     } else if (maxGuests < 1) {
@@ -105,7 +104,8 @@ const HostPlacesFormPage = () => {
       }
       setLoading(false);
     };
-    
+    getPlace();
+
   }, [id]);
 
   const preInput = (header, description) => {
@@ -121,17 +121,30 @@ const HostPlacesFormPage = () => {
     e.preventDefault();
 
     const formDataIsValid = isValidPlaceData();
-    const placeData = { ...formData, fileList };
+    const sanitizedFileList = fileList.map(({ lastModifiedDate, ...rest }) => rest);
+    const placeData = {...formData, fileList: sanitizedFileList} ;
 
     // Make API call only if formData is valid and dispatch the action
     if (formDataIsValid) {
-      if (id) {
-        // update existing place
-        dispatch(updateListing({ id, ...placeData }));
-      } else {
-        // new place
-        dispatch(addListing(placeData));
-        navigate('/account/places');
+      console.log('placeData:', placeData);
+      try {
+        let existslistings = JSON.parse(localStorage.getItem('listings')) || [];
+        if (existslistings.length) {
+          // update existing place
+          existslistings = existslistings.map((listing) => parseInt(listing.id) === parseInt(id) ? placeData : listing);
+          localStorage.setItem('listings', JSON.stringify(existslistings));
+          dispatch(updateListing({ id, ...placeData }));
+        } else {
+          // new place
+          placeData.id = existslistings.length ? Math.max(...existslistings.map(listing => listing.id)) + 1 : 1;
+          existslistings.push(placeData);
+          localStorage.setItem('listings', JSON.stringify(placeData));
+          // dispatch(addListing(placeData));
+          navigate('/account/places');
+        }
+      } catch (e) {
+        console.log('Error: ', e.message);
+        toast.error('Failed to save place!');
       }
     }
   };
@@ -164,34 +177,25 @@ const HostPlacesFormPage = () => {
           placeholder="address"
         />
 
-        {preInput('Photos', 'more = better')}
+        {preInput('Photos', 'Upload the pics of your place')}
         <MultiplePhotosUploader
           fileList={fileList}
           setFileList={setFileList}
         />
-        {preInput('Description', 'discription of the place')}
+        {preInput('Perks', ' Select all the perks of your place')}
+        <Perks selected={perks} handleFormData={handleFormData} />
+        {preInput('Description', 'Tell us more about your place')}
         <textarea
           value={description}
           name="description"
           onChange={handleFormData}
         />
-
-        {preInput('Perks', ' select all the perks of your place')}
-        <Perks selected={perks} handleFormData={handleFormData} />
-
-        {preInput('Extra info', 'house rules, etc ')}
-        <textarea
-          value={extraInfo}
-          name="extraInfo"
-          onChange={handleFormData}
-        />
-
         {preInput(
           'Number of guests & Price',
           // 'add check in and out times, remember to have some time window forcleaning the room between guests. '
           'Specify the maximum number of guests so that the client stays within the limit.',
         )}
-        <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-4">
+         <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-4">
           <div>
             <h3 className="mt-2 -mb-1">Max no. of guests</h3>
             <input
@@ -213,6 +217,13 @@ const HostPlacesFormPage = () => {
             />
           </div>
         </div>
+        {preInput('Extra info', 'house rules, etc ')}
+        <textarea
+          value={extraInfo}
+          name="extraInfo"
+          onChange={handleFormData}
+        />
+       
         <button className="mx-auto my-4 flex rounded-full bg-primary py-3 px-20 text-xl font-semibold text-white"
           onClick={savePlace} >
           Save

@@ -36,7 +36,7 @@
     },
     {
       "id": 3,
-      "title": "Cozy Apartment in City Center",
+      "title": "Suyash n City Center",
       "price": 120,
       "location": "New York",
       "maxGuests": 4,
@@ -53,7 +53,7 @@
     },
     {
       "id": 4,
-      "title": "Luxury Villa with Pool",
+      "title": "london Villa with Pool",
       "price": 300,
       "location": "Los Angeles",
       "maxGuests": 4,
@@ -70,7 +70,7 @@
     },
     {
       "id": 5,
-      "title": "Cozy Apartment in City Center",
+      "title": "nikhil Apartment in City Center",
       "price": 120,
       "location": "New York",
       "maxGuests": 4,
@@ -216,7 +216,7 @@
       "totalPrice": 480,
       "place": {
         "id": 1,
-        "title": "Luxury Villa with Pool",
+        "title": "Shubham Villa with Pool",
         "description": "Luxury Villa with Pool",
         "photos": [
           "https://via.placeholder.com/100/771796",

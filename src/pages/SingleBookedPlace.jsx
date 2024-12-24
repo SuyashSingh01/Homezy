@@ -15,11 +15,11 @@ const SingleBookedPlace = () => {
   const getBookings = async () => {
     try {
       setLoading(true);
-      const { data } = await axios.get('/bookings');
+      const { data } = await axios.get('http://localhost:3001/bookings');
 
       // filter the data to get current booking
       const filteredBooking = data.booking.filter(
-        (booking) => booking._id === parseInt(id),
+        (booking) => parseInt(booking._id) === parseInt(id),
       );
 
       setBooking(filteredBooking[0]);

@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import SearchBar from './SearchBar.jsx';
 import { Avatar, AvatarImage } from '@radix-ui/react-avatar';
-import { SearchContext } from '../context/SearchContext.jsx';
-import { useContext } from 'react';
 import { useSelector } from 'react-redux';
 import { Dropdown } from 'antd';
 import { LoginItems, LogoutItems } from './NavDropdowndata.jsx';

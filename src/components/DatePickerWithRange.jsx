@@ -6,7 +6,7 @@ import { Button } from './Button.jsx';
 import { Calendar } from './Calender.jsx';
 import {Popover,PopoverContent,PopoverTrigger,} from './popover';
 
-export default function DatePickerWithRange({ className, setDateRange }) {
+export default function DatePickerWithRange({className, setDateRange }) {
   const [date, setDate] = React.useState({
     from: new Date(),
     to: addDays(Date.now(), 5),
@@ -36,7 +36,7 @@ export default function DatePickerWithRange({ className, setDateRange }) {
             id="date"
             variant={'outline'}
             className={cn(
-              'w-[300px] justify-start text-left font-normal',
+              'w-[300px] justify-start text-left font-normal ',
               !date && 'text-muted-foreground',
             )}
           >
@@ -55,7 +55,7 @@ export default function DatePickerWithRange({ className, setDateRange }) {
             )}
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="start">
+        <PopoverContent className="w-auto md:p-4 p-2 bg-white" align="start">
           <Calendar
             initialFocus
             mode="range"

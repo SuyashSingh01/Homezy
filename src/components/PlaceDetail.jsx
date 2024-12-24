@@ -4,54 +4,57 @@ import axios from 'axios';
 import Spinner from './Spinner'
 import BookingWidget from './BookingWidget.jsx';
 import PlaceGallery from './PlaceGallery.jsx';
-import PerksWidget from './PerksWidget.jsx';
+import Perks from './Perks.jsx';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLoading } from '../Redux/slices/AuthSlice';
 import { toast } from 'react-toastify';
 import AddressLink from './AddressLink.jsx';
+import Reviews from './Reviews.jsx';
+
 const PlaceDetail = () => {
 
   const { id } = useParams();
   const [place, setPlace] = useState({});
-  const {loading} = useSelector((state)=>state.auth);
+  const { loading } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  
+
   const getPlace = async () => {
-    
+    // backend call
     dispatch(setLoading(true));
-    try{
+    try {
       const response = await axios.get(`http://localhost:3001/listings`);
-      const placeDetail= response.data.find((place) => place.id === parseInt(id));
-      console.log('pplaceDetail:',placeDetail);
+      console.log("response: ", response.data);
+      const placeDetail = response.data.find((place) => parseInt(place.id, 10) === parseInt(id, 10));
+      console.log('pplaceDetail:', placeDetail);
       setPlace(placeDetail);
-      
-    }catch(e){
-      
-      console.log("eror ",e.message);
+
+    } catch (e) {
+      console.log("eror ", e.message);
       toast.error(e.message);
     }
     dispatch(setLoading(false));
-    
+
   };
   useEffect(() => {
     getPlace();
   }, [id]);
-  
-  if (loading)return <Spinner />;
-  if(!place)return;
+
+  if (loading) return <Spinner />;
+  if (!place) return;
   return (
-    <div className="mt-4 overflow-x-hidden px-8 pt-20 ">
-      <h1 className="text-3xl">{place?.title}</h1>
-   <AddressLink className="my-2 block" placeAddress={place?.address} />  
+    <div className="mt-4 overflow-x-hidden px-8 pt-20">
+      <h1 className="text-3xl mt-4 ">{place?.title}</h1>
+      <AddressLink className="my-2 block" placeAddress={place?.address} />
       <PlaceGallery place={place} />
+
       <div className="mt-8 mb-8 grid grid-cols-1 gap-8 md:grid-cols-[2fr_1fr]">
-        <div className="">
-          <div className="my-4 ">
-            <h2 className="text-2xl font-semibold">Description</h2>
+        <div className="text-balance ">
+          <div className="my-4">
+            <h2 className="md:text-2xl font-semibold text-xl">Description</h2>
             {place?.description}
           </div>
           Max number of guests: {place?.maxGuests}
-          <PerksWidget perks={place?.perks} />
+          <Perks perks={place?.perks} />
         </div>
         <div>
         <BookingWidget place={place} />
@@ -65,6 +68,7 @@ const PlaceDetail = () => {
           {place?.extraInfo}
         </div>
       </div>
+      <Reviews />
     </div>
   )
 };

@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const listingSlice = createSlice({
   name: "listings",
   initialState: {
-    listings: [], // Array of all listings
+    listings:localStorage.getItem("listings")? JSON.parse(localStorage.getItem("listings")):[],//Array of Hosted listings
     favorites: [], // List of favorite listings
     // currentListing: null, // Current listing being viewed needs to work on this
    
