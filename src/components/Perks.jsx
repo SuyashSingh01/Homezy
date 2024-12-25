@@ -6,7 +6,7 @@ const Perks = ({ perks }) => {
       <hr className="mb-5 border" />
       <p className="text-2xl font-semibold">What this place offers</p>
 
-      <div className="mt-4 grid flex-col gap-4 lg:grid-cols-2 lg:justify-items-stretch lg:gap-4">
+      <div className="mt-4 grid flex-col md:flex-row gap-4 lg:grid-cols-2 lg:justify-items-stretch lg:gap-4">
         <div className="flex gap-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"

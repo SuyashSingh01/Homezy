@@ -1,28 +1,17 @@
-import axios from "axios";
-import React, { useState, useEffect } from "react";
+import React, {useContext } from "react";
 import { useSelector } from "react-redux";
 import PlaceCard from "../components/PlaceCard";
-import NotFavouritePlace from "../components/NotFavouritePlace"; // Placeholder component
+import NotFavouritePlace from "../components/NotFavouritePlace"; 
+import {ListingsContext} from "../context/ListingsContext"
 
 const LikedPlacesPage = () => {
   const likedPlaces = useSelector((state) => state.listings.favorites); // IDs of liked places
-  const [listings, setListings] = useState([]); // Initialize as an empty array
+  // const [likedListings, setLikedListings] = useState(likedPlaces); // Initialize as an empty array
+  const {listingData} =useContext(ListingsContext);
 
-  useEffect(() => {
-    const getPlaces = async () => {
-      try {
-        const { data } = await axios.get("http://localhost:3001/listings");
-        console.log("Listing->>>>data", data);
-        setListings(data);
-      } catch (error) {
-        console.log("Error: ", error.message);
-      }
-    };
-    getPlaces();
-  }, []);
+  
+  const likedListings = listingData.filter((place) => likedPlaces.includes(place.id));
 
-  // Filter listings to include only liked places
-  const likedListings = listings.filter((place) => likedPlaces.includes(place.id));
 
   console.log("likedListings", likedListings);
 

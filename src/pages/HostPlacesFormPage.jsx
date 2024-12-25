@@ -2,8 +2,9 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import Perks from '../components/PerksWidget.jsx';
+import { useNavigate, useParams } from 'react-router-dom';
+import Perks from '../components/Perks.jsx';
+import PerksWidget from '../components/PerksWidget.jsx';
 import Spinner from '../components/Spinner';
 import MultiplePhotosUploader from './MultiplePhotosUploader.jsx';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,7 +12,8 @@ import { addListing, updateListing } from '../Redux/slices/ListingSlice.js';
 
 const HostPlacesFormPage = () => {
   const { id } = useParams();
-  const {place}=useLocation();
+  console.log('HostPlacesFormPage id:', id);
+  const place = JSON.parse(localStorage.getItem('listing'));
   const [loading, setLoading] = useState(false);
   const [fileList, setFileList] = useState([]);
   const navigate = useNavigate();
@@ -19,7 +21,7 @@ const HostPlacesFormPage = () => {
   // const { listings } = useSelector((state) => (state.listings));  // use the listings in redux store
 
   const [formData, setFormData] = useState({
-    title: place?.title  || '',
+    title: place?.title || '',
     address: place?.address || '',
     description: place?.description || '',
     perks: place?.perks || [],
@@ -94,9 +96,7 @@ const HostPlacesFormPage = () => {
     const getPlace = async () => {
       setLoading(true);
       try {
-        const { data } = await axios.get(
-          `http://localhost:3001/listings/${id}`,
-        );
+        const { data } = await axios.get(`http://localhost:3001/listings/${id}`);
         setFormData(data);
         setFileList(data.photos);
       } catch (error) {
@@ -122,7 +122,7 @@ const HostPlacesFormPage = () => {
 
     const formDataIsValid = isValidPlaceData();
     const sanitizedFileList = fileList.map(({ lastModifiedDate, ...rest }) => rest);
-    const placeData = {...formData, fileList: sanitizedFileList} ;
+    const placeData = { ...formData, fileList: sanitizedFileList };
 
     // Make API call only if formData is valid and dispatch the action
     if (formDataIsValid) {
@@ -132,16 +132,20 @@ const HostPlacesFormPage = () => {
         if (existslistings.length) {
           // update existing place
           existslistings = existslistings.map((listing) => parseInt(listing.id) === parseInt(id) ? placeData : listing);
+
           localStorage.setItem('listings', JSON.stringify(existslistings));
-          dispatch(updateListing({ id, ...placeData }));
+          // dispatch(updateListing({ id, ...placeData }));
+
         } else {
           // new place
           placeData.id = existslistings.length ? Math.max(...existslistings.map(listing => listing.id)) + 1 : 1;
           existslistings.push(placeData);
           localStorage.setItem('listings', JSON.stringify(placeData));
           // dispatch(addListing(placeData));
-          navigate('/account/places');
         }
+        navigate('/account/places');
+        console.log('existing listings:', existslistings);
+        toast.success('Place saved successfully!');
       } catch (e) {
         console.log('Error: ', e.message);
         toast.error('Failed to save place!');
@@ -158,7 +162,7 @@ const HostPlacesFormPage = () => {
       <form onSubmit={savePlace}>
         {preInput(
           'Title',
-          'title for your place. Should be short and catchy as in advertisement',
+          'Title for your place. Should be short and catchy as in advertisement',
         )}
         <input
           type="text"
@@ -168,7 +172,7 @@ const HostPlacesFormPage = () => {
           placeholder="title, for example: My lovely apt"
         />
 
-        {preInput('Address', 'address to this place')}
+        {preInput('Address', 'Address to this place')}
         <input
           type="text"
           name="address"
@@ -183,7 +187,10 @@ const HostPlacesFormPage = () => {
           setFileList={setFileList}
         />
         {preInput('Perks', ' Select all the perks of your place')}
-        <Perks selected={perks} handleFormData={handleFormData} />
+        {( id == undefined) ?
+          (<PerksWidget selected={perks} handleFormData={handleFormData} />)
+          : 
+          (<Perks selected={perks} handleFormData={handleFormData} />)}
         {preInput('Description', 'Tell us more about your place')}
         <textarea
           value={description}
@@ -195,7 +202,7 @@ const HostPlacesFormPage = () => {
           // 'add check in and out times, remember to have some time window forcleaning the room between guests. '
           'Specify the maximum number of guests so that the client stays within the limit.',
         )}
-         <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-4">
+        <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-4">
           <div>
             <h3 className="mt-2 -mb-1">Max no. of guests</h3>
             <input
@@ -223,7 +230,7 @@ const HostPlacesFormPage = () => {
           name="extraInfo"
           onChange={handleFormData}
         />
-       
+
         <button className="mx-auto my-4 flex rounded-full bg-primary py-3 px-20 text-xl font-semibold text-white"
           onClick={savePlace} >
           Save

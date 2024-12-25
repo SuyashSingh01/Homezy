@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { Upload, Modal, Button } from "antd";
+import { Upload, Modal } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 
-const MultiplePhotoUploader = ({fileList,setFileList}) => {
-  // const [fileList, setFileList] = useState([]);
+const MultiplePhotoUploader = ({ fileList, setFileList }) => {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [previewTitle, setPreviewTitle] = useState("");
@@ -11,11 +10,17 @@ const MultiplePhotoUploader = ({fileList,setFileList}) => {
   const handlePreview = async (file) => {
     setPreviewImage(file.thumbUrl || file.url);
     setPreviewOpen(true);
-    setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf("/") + 1));
+    setPreviewTitle(
+      file.name || file.url.substring(file.url.lastIndexOf("/") + 1)
+    );
   };
 
   const handleChange = ({ fileList: newFileList }) => {
-    setFileList(newFileList);
+    const updatedFileList = newFileList.map((file, index) => ({
+      ...file,
+      uid: file.uid || `${file.name}-${index}`, // Ensure unique uid
+    }));
+    setFileList(updatedFileList);
   };
 
   const handleRemove = (file) => {
@@ -30,7 +35,7 @@ const MultiplePhotoUploader = ({fileList,setFileList}) => {
         onPreview={handlePreview}
         onChange={handleChange}
         onRemove={handleRemove}
-        beforeUpload={() => false} 
+        beforeUpload={() => false} // Prevent auto-upload
       >
         {fileList.length >= 5 ? null : (
           <div>

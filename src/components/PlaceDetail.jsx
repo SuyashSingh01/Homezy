@@ -23,9 +23,8 @@ const PlaceDetail = () => {
     dispatch(setLoading(true));
     try {
       const response = await axios.get(`http://localhost:3001/listings`);
-      console.log("response: ", response.data);
       const placeDetail = response.data.find((place) => parseInt(place.id, 10) === parseInt(id, 10));
-      console.log('pplaceDetail:', placeDetail);
+      // console.log('pplaceDetail:', placeDetail);
       setPlace(placeDetail);
 
     } catch (e) {

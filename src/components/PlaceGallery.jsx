@@ -4,7 +4,7 @@ const PlaceGallery = ({place}) => {
 
   const [showAllPhotos, setShowAllPhotos] = useState(false);
 
-  console.log("placegallery", place);
+  // console.log("placegallery", place);
 
   if (showAllPhotos) {
     return (

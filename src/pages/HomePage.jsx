@@ -1,14 +1,15 @@
 // import useFetch from '../utility/useFetch';
 import Spinner from '../components/Spinner';
-import SingleCard from '../components/PlaceCard';
+import PlaceCard from '../components/PlaceCard';
 import {useSelector } from 'react-redux';
 import { ListingsContext } from '../context/ListingsContext';
 import { useContext } from 'react';
 
 const HomePage = () => {
 
-  const ApiUrl = "https://jsonplaceholder.typicode.com/posts"; // Mock API URL
+  // const ApiUrl = "https://jsonplaceholder.typicode.com/posts"; // Mock API URL
   // const { data,error } = useFetch(ApiUrl); // Fetch data
+ 
   // Access loading state from Redux
   const { loading } = useSelector((state) => state.auth);
   // const {listings }=useSelector((state)=>state.listings);
@@ -27,7 +28,7 @@ const HomePage = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 justify-items-center py-32 px-4 md:grid-cols-2 md:gap-4 lg:grid-cols-3 xl:grid-cols-4 xl:gap-10">
+    <div className="grid grid-cols-1 justify-items-center py-32 px-4 md:grid-cols-2 md:gap-4 lg:grid-cols-3 xl:grid-cols-4 xl:gap-10 ">
       {listings && listings.length > 0 ? (
         listings.filter(
           (val) => {
@@ -38,7 +39,7 @@ const HomePage = () => {
               return val;
             }
           }
-        ).map((place, index) => <SingleCard place={place} key={index} />)
+        ).map((place, index) => <PlaceCard place={place} key={index} />)
       ) : (
         <div className="absolute left-1/2 right-1/2 top-40 flex  w-full -translate-x-1/2 transform flex-col p-10  md:w-1/2">
           <h1 className="text-3xl font-semibold">Result not found!</h1>

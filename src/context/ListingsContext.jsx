@@ -13,9 +13,9 @@ export const ListingsProvider = ({ children }) => {
 
   const { listings } = useSelector((state) => state.listings);
   const [searchItem, setSearchItem] = useState('');
-  const [listingData, setlistingData] = useState(listings);
+  const [listingData, setlistingData] = useState([]);
 
-
+  // we can use this function to filter the data based on searchItem currently i am usi
   // function handleSearchClick() {
   //   console.log('handleSearchClick',listings);
   //   if (searchItem === "") { 
@@ -32,6 +32,7 @@ export const ListingsProvider = ({ children }) => {
     dispatch(setLoading(true));
     try {
       const response = await axios.get('http://localhost:3001/listings');
+      localStorage.setItem('listings', JSON.stringify(response.data));
       setlistingData(response.data);
       dispatch(setListings(listingData));
     } catch (e) {
@@ -44,7 +45,7 @@ export const ListingsProvider = ({ children }) => {
   }, []);
 
   return (
-    <ListingsContext.Provider value={{ searchItem, setSearchItem, fetchedListingData, listingData}}>
+    <ListingsContext.Provider value={{ searchItem, setSearchItem, fetchedListingData, listingData,setlistingData }}>
       {children}
     </ListingsContext.Provider>
   );
