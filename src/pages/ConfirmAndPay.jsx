@@ -1,20 +1,22 @@
 import React from "react";
 import { Select, Button, Input } from "antd";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { format } from 'date-fns';
+import { format } from "date-fns";
+import { toast } from "react-toastify";
 
 const ConfirmAndPay = () => {
-
   const params = useParams();
   const bookingid = params.id;
-  const { bookings } = useSelector(state => state.bookings);
-  const booking = bookings.find(book => book.place === parseInt(bookingid));
-  console.log("bookingsDetail", bookings);
+  const location = useLocation();
+  const { bookings } = useSelector((state) => state.bookings);
+  const { bookingDetail } = location.state || {};
+  const { place, BookingDetail } = bookingDetail || {};
 
-  console.log("bookingDetailtype", typeof booking);
-  console.log("bookingDetail", booking);
+  // Find the booking
+  const booking = bookings.find((book) => parseInt(book.place) === parseInt(bookingid));
 
+  // Fallback values for check-in and check-out dates
   let checkin = "N/A";
   let checkout = "N/A";
 
@@ -23,23 +25,42 @@ const ConfirmAndPay = () => {
     const checkOutDate = new Date(booking.checkOut);
 
     if (!isNaN(checkInDate) && !isNaN(checkOutDate)) {
-      checkin = format(checkInDate, 'yyyy-MM-dd');
-      checkout = format(checkOutDate, 'yyyy-MM-dd');
+      checkin = format(checkInDate, "yyyy-MM-dd");
+      checkout = format(checkOutDate, "yyyy-MM-dd");
     }
   }
-  if (!booking) return <h1>Booking not found Try Again Later</h1>
 
+  // Calculate the number of nights
+  const date1 = new Date(checkin);
+  const date2 = new Date(checkout);
+  const diffTime = !isNaN(date1) && !isNaN(date2) ? Math.abs(date2 - date1) : 0;
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) || 0;
+
+  // Calculate prices
+  const basePrice = BookingDetail?.price || 0;
+  const airbnbFee = Math.floor((5 / 100) * basePrice);
+  const taxes = Math.floor((18 / 100) * basePrice);
+  const totalPrice = basePrice + airbnbFee + taxes;
+
+  // Guard against missing booking details
+  if (!booking) {
+    return (
+      <h1 className="text-center text-xl md:text-3xl font-bold">
+        Booking not found. Try again later.
+      </h1>
+    );
+  }
 
   return (
-    <div className="bg-black min-h-screen py-10 px-6 flex justify-center">
+    <div className="min-h-screen py-10 px-6 flex justify-center">
       <div className="w-full gap-3 max-w-5xl flex flex-col md:flex-row md:gap-5 justify-between items-center">
         {/* Left Section */}
-        <div className="md:col-span-2  p-8 rounded-lg">
-          <h1 className="text-2xl font-semibold mb-6">Confirm and Pay</h1>
+        <div className="md:col-span-2 p-8 rounded-lg">
+          <h1 className="text-2xl font-bold mb-6">Confirm and Pay</h1>
 
           {/* Trip Details */}
           <div className="border-b pb-4 mb-6">
-            <h2 className="text-lg font-medium">Your trip</h2>
+            <h2 className="text-lg font-semibold">Your trip</h2>
             <div className="mt-4 space-y-2">
               <div className="flex justify-between">
                 <p>Check In Date</p>
@@ -51,8 +72,7 @@ const ConfirmAndPay = () => {
               </div>
               <div className="flex justify-between">
                 <p>Guests</p>
-                <p>{booking?.noOfGuest}</p>
-
+                <p>{booking?.noOfGuest || "N/A"}</p>
               </div>
             </div>
           </div>
@@ -62,9 +82,15 @@ const ConfirmAndPay = () => {
             <h2 className="text-lg font-medium">Pay with</h2>
             <div className="mt-4 space-y-4">
               <Select placeholder="Net Banking" className="w-full">
-                <Select.Option value="hdfc">HDFC Bank</Select.Option>
-                <Select.Option value="sbi">State Bank of India</Select.Option>
-                <Select.Option value="icici">ICICI Bank</Select.Option>
+                <Select.Option key="hdfc" value="hdfc">
+                  HDFC Bank
+                </Select.Option>
+                <Select.Option key="sbi" value="sbi">
+                  State Bank of India
+                </Select.Option>
+                <Select.Option key="icici" value="icici">
+                  ICICI Bank
+                </Select.Option>
               </Select>
             </div>
           </div>
@@ -75,14 +101,33 @@ const ConfirmAndPay = () => {
             <div className="mt-4 space-y-4">
               <label>
                 Your Full Name
-                <Input placeholder="Full Name" className="w-full" defaultValue={booking?.name} disabled />
+                <Input
+                  placeholder="Full Name"
+                  className="w-full"
+                  defaultValue={booking?.name || ""}
+                  disabled
+                />
               </label>
-              <label>Your Phone Number
-                <Input placeholder="Phone Number" className="w-full" defaultValue={booking?.phone} disabled />
+              <label>
+                Your Phone Number
+                <Input
+                  placeholder="Phone Number"
+                  className="w-full"
+                  defaultValue={booking?.phone || ""}
+                  disabled
+                />
               </label>
               <div className="flex justify-center items-center">
-                <Input placeholder="Alternative Phone number" className="w-full" type="number" minLength={10} maxLength={12} />
-                <Button type="primary" color="danger">Add</Button>
+                <Input
+                  placeholder="Alternative Phone number"
+                  className="w-full"
+                  type="number"
+                  minLength={10}
+                  maxLength={12}
+                />
+                <Button className="bg-primary" type="primary">
+                  Add
+                </Button>
               </div>
             </div>
           </div>
@@ -95,48 +140,49 @@ const ConfirmAndPay = () => {
             </p>
           </div>
 
-          {/*Confirm Button  */}
-          <button className="mx-auto my-4 flex rounded-full bg-primary py-3 px-15 text-xl font-semibold text-white"
-            onClick={() => alert("Payment Successful")}
+          {/* Confirm Button */}
+          <button
+            className="mx-auto my-8 flex rounded-xl bg-primary py-2 px-10 md:px-14 text-md md:text-lg font-semibold text-white"
+            onClick={() => toast.success("Payment Successful")}
           >
             Confirm and Pay
           </button>
         </div>
 
         {/* Right Section */}
-        <div className=" ">
-          <div className="p-6 rounded-lg ">
-            <div className="mb-6">
-              <img
-                src="https://via.placeholder.com/150"
-                alt="Listing Thumbnail"
-                className=" h-20 w-40 object-cover rounded-md"
-              />
-              <h2 className="text-lg font-medium mt-4">Corbett Riverside Homestay</h2>
-              <p className="text-gray-600">Entire cottage • 4.96 (131 reviews) • Superhost</p>
-            </div>
+        <div className="p-6 rounded-lg">
+          <div className="mb-6">
+            <img
+              src="https://via.placeholder.com/150"
+              alt="Listing Thumbnail"
+              className="h-40 w-60 object-cover rounded-md"
+            />
+            <h2 className="text-lg font-medium mt-4">{place?.title || "No title available"}</h2>
+            <p className="text-gray-600">{place?.location || "No location provided"}</p>
+          </div>
 
-            {/* Price Details */}
-            <div className="border-t pt-4">
-              <h2 className="text-lg font-medium mb-4">Price details</h2>
-              <div className="space-y-2">
-                <div className="flex justify-between">
-                  <p>₹5500 x 1 night</p>
-                  <p>₹5500</p>
-                </div>
-                <div className="flex justify-between">
-                  <p>Airbnb service fee</p>
-                  <p>₹776.47</p>
-                </div>
-                <div className="flex justify-between">
-                  <p>Taxes</p>
-                  <p>₹660</p>
-                </div>
+          {/* Price Details */}
+          <div className="border-t pt-4">
+            <h2 className="text-lg font-medium mb-4">Price details</h2>
+            <div className="space-y-2">
+              <div className="flex justify-between">
+                <p>
+                  {place?.price} x {diffDays} night
+                </p>
+                <p>{basePrice}</p>
               </div>
-              <div className="border-t mt-4 pt-4 flex justify-between font-semibold">
-                <p>Total (INR)</p>
-                <p>₹6936.47</p>
+              <div className="flex justify-between">
+                <p>Airbnb service fee</p>
+                <p>{airbnbFee}</p>
               </div>
+              <div className="flex justify-between">
+                <p>Taxes</p>
+                <p>{taxes}</p>
+              </div>
+            </div>
+            <div className="border-t mt-4 pt-4 flex justify-between font-semibold">
+              <p className="text-xl font-semibold">Total (INR)</p>
+              <p className="text-xl font-semibold">₹{totalPrice}</p>
             </div>
           </div>
         </div>

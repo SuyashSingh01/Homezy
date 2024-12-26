@@ -13,7 +13,8 @@ const BookingWidget = ({ place }) => {
   const navigate=useNavigate();
   
   const { user } = useSelector((state)=>state.auth);
-  console.log("userinBookingWid",user);
+  // console.log("userinBookingWid",user);
+  // console.log("bookingplace",place);
 
   const [dateRange, setDateRange] = useState({ from: null, to: null });
 
@@ -66,15 +67,22 @@ const BookingWidget = ({ place }) => {
         price: numberOfNights * price,
       };
       // here the id should be the same as  the place id 
+   
       dispatch(addBooking(BookingDetails));
-      navigate(`/account/bookings/${id}/confirm-pay/`);
+      const bookingDetail = {
+        BookingDetails: BookingDetails,
+        place: place,
+      };
+    
+      navigate(`/account/bookings/${id}/confirm-pay/`, { state: { bookingDetail } });
+
 
       // take out the booking id from server response created in database
       // const bookingId = response.data.booking._id;
       // navigate(`/account/bookings/${bookingId}`);
     } catch (error) {
       toast.error('Something went wrong!');
-      console.log('Error: ', error);
+      console.log('Error: ', error.message);
     }finally{
     dispatch(setLoading(false));
     }
