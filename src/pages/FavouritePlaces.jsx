@@ -1,7 +1,7 @@
 import React, {useContext } from "react";
 import { useSelector } from "react-redux";
 import PlaceCard from "../components/PlaceCard";
-import NotFavouritePlace from "../components/NotFavouritePlace"; 
+import ExploreCard from "../components/ExploreCard.jsx"; 
 import {ListingsContext} from "../context/ListingsContext"
 
 const LikedPlacesPage = () => {
@@ -30,7 +30,7 @@ const LikedPlacesPage = () => {
           </div>
         </>
       ) : (
-        <NotFavouritePlace />
+        <ExploreCard title={"Liked Place"} explore={"You haven’t liked any places yet. Explore and add your favorites!"}/>
       )}
     </div>
   );

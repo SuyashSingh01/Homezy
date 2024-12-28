@@ -1,33 +1,47 @@
-import React, { useState } from "react";
 import { toast } from "react-toastify";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addReviews } from '../Redux/slices/BookingSlice';
+import { useLocation } from "react-router-dom";
 
 const Reviews = ({ placeId }) => {
-  const [reviews, setReviews] = useState([
-    { username: "John Doe", rating: 5, comment: "Great place!", timestamp: "2024-12-01" },
-    { username: "Jane Smith", rating: 4, comment: "Nice and cozy.", timestamp: "2024-12-02" },
-  ]);
 
+  const dispatch = useDispatch();
+  const location=useLocation();
+  const {bookings}= useSelector(state=>state.bookings);
+  // console.log("location",typeof location.pathname);
+  // console.log("location",typeof `/place/:id`);
+
+  const { reviews } = useSelector(state => state.bookings);
+  const { user } = useSelector(state => state.auth);
   const [newReview, setNewReview] = useState({ username: "", rating: 0, comment: "" });
+  const isBooked = bookings.find((booking) => booking.placeId === placeId);
 
   const handleSubmitReview = (e) => {
     e.preventDefault();
-    if (!newReview.username || !newReview.comment || newReview.rating <= 0) {
-      toast.console.error("Please complete all fields before submitting.");
-      return;
-    }
+    try {
+      if (!newReview.username || !newReview.comment || newReview.rating <= 0) {
+        toast.error("Please complete all fields before submitting.");
+        return;
+      }
+      const updatedReviews = {
+        ...newReview, timestamp: new Date().toISOString().split("T")[0], userId: user?.uid,
+        placeId: placeId,
+      }
+      dispatch(addReviews(updatedReviews));
+      setNewReview({ username: "", rating: 0, comment: "" });
 
-    const updatedReviews = [
-      ...reviews,
-      { ...newReview, timestamp: new Date().toISOString().split("T")[0] },
-    ];
-    setReviews(updatedReviews);
-    setNewReview({ username: "", rating: 0, comment: "" });
+    }
+    catch (err) {
+      console.error(err.message);
+      toast.error(err.message);
+    }
   };
 
   return (
     <div className="bg-white rounded-lg shadow-lg p-6 mt-8">
-      <h2 className="text-2xl font-semibold mb-4 border-b pb-2">Reviews</h2>
 
+      <h2 className="text-2xl font-semibold mb-4 border-b pb-2">Reviews</h2>
       {/* Display Existing Reviews */}
       {reviews.length > 0 ? (
         <div className="space-y-4">
@@ -46,23 +60,23 @@ const Reviews = ({ placeId }) => {
           ))}
         </div>
       ) : (
-        <p className="text-gray-500">No reviews yet. Be the first to leave one!</p>
+        <p className="text-gray-500 text-xl font-semibold text-center">No reviews yet. Be the first to leave one!</p>
       )}
 
       {/* Add a New Review */}
+      {isBooked && (
       <form onSubmit={handleSubmitReview} className="mt-6 space-y-4">
         <h3 className="text-xl font-medium">Leave a Review</h3>
-
         <input
           type="text"
           placeholder="Your Name"
-          className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring focus:ring-blue-300"
+          className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring focus:ring-blue-100"
           value={newReview.username}
           onChange={(e) => setNewReview({ ...newReview, username: e.target.value })}
         />
 
         <select
-          className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring focus:ring-blue-300"
+          className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring focus:ring-blue-200"
           value={newReview.rating}
           onChange={(e) => setNewReview({ ...newReview, rating: parseInt(e.target.value) })}
         >
@@ -89,6 +103,7 @@ const Reviews = ({ placeId }) => {
           Submit Review
         </button>
       </form>
+      )}
     </div>
   );
 };

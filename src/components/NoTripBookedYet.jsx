@@ -14,7 +14,7 @@ function NoTripBookedYet() {
                     Time to dust off you bags and start planning your next adventure
                 </p>
                 <Link to="/" className="my-4">
-                    <div className="flex w-40 justify-center rounded-lg border border-black p-3 text-lg font-semibold hover:bg-gray-50">
+                    <div className="flex w-40 justify-center rounded-lg  text-white bg-primary p-3 text-lg font-semibold hover:bg-red-500">
                         Start Searching
                     </div>
                 </Link>

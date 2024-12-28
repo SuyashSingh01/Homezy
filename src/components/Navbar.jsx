@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation,Link} from 'react-router-dom';
 import SearchBar from './SearchBar.jsx';
 import { Avatar, AvatarImage } from '@radix-ui/react-avatar';
 import { useSelector } from 'react-redux';
@@ -30,7 +30,7 @@ const Navbar = () => {
     console.log("insideuserside", user);
     console.log("tokeninside", token);
 
-    // // hide searchbar based on the current empty or not of searchItem
+   // hide searchbar based on the current empty or not of searchItem
     if (location?.pathname === '/') {
       setShowSearchBar(true);
     } else {
@@ -52,7 +52,7 @@ const Navbar = () => {
         className={`flex p-2 ${showSearchBar ? 'justify-around' : 'justify-between px-10'
           } w-screen max-w-screen-xl`}
       >
-        <a href="/" className="flex items-center gap-1">
+        <Link to="/" className="flex items-center gap-1">
           <img
             className="h-8 w-8 md:h-10 md:w-10"
             src="https://cdn-icons-png.flaticon.com/512/2111/2111320.png"
@@ -62,12 +62,12 @@ const Navbar = () => {
           <span className="hidden text-2xl font-bold text-red-500 md:block">
             Airbnb
           </span>
-        </a>
+        </Link>
 
         {showSearchBar && <SearchBar />}
 
         <div
-          className={`w-50  flex h-full items-center gap-2 rounded-full py-1 px-3 md:border shadow-sm ${isActive ? 'border-2 border-slate-800 shadow-md' : ''}`}
+          className={`w-50  flex h-full items-center gap-2 rounded-full py-1 px-3 md:border shadow-sm ${isActive ? 'border border-slate-200 shadow-md' : ''}`}
             onClick={() => setIsActive(!isActive)}
         >
 

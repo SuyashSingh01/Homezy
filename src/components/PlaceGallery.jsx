@@ -42,7 +42,7 @@ const PlaceGallery = ({place}) => {
     );
   }
   return (
-    <div className="relative">
+    <div className="">
       {/* Medium devices */}
       <div className="hidden h-[400px] max-h-[450px] grid-cols-4 gap-2 overflow-hidden rounded-[12px] md:grid">
         {/* column 1 */}

@@ -1,20 +1,27 @@
 import React from "react";
 import { Select, Button, Input } from "antd";
-import { useLocation, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useLocation, useParams} from "react-router-dom";
+import { useSelector ,useDispatch} from "react-redux";
 import { format } from "date-fns";
 import { toast } from "react-toastify";
+import { addBooking } from "../Redux/slices/BookingSlice";
 
 const ConfirmAndPay = () => {
   const params = useParams();
   const bookingid = params.id;
   const location = useLocation();
+  const dispatch=useDispatch();
   const { bookings } = useSelector((state) => state.bookings);
-  const { bookingDetail } = location.state || {};
-  const { place, BookingDetail } = bookingDetail || {};
+  const { BookingDetails } = location.state || {};
+  const { placeDetail, booking } = BookingDetails || {};
+  console.log("locationstate",BookingDetails);
+  console.log("bookingsinRedux",bookings);
+  // Find the existience we can do it in backend booking
 
-  // Find the booking
-  const booking = bookings.find((book) => parseInt(book.place) === parseInt(bookingid));
+  // let  booking;
+  // if(bookings){
+  // booking = bookings.find((book) => parseInt(book.place) === parseInt(bookingid));
+  // }
 
   // Fallback values for check-in and check-out dates
   let checkin = "N/A";
@@ -29,7 +36,17 @@ const ConfirmAndPay = () => {
       checkout = format(checkOutDate, "yyyy-MM-dd");
     }
   }
-
+  
+  const bookingHandler= async()=>{
+    try {
+      // add  the booking in the backend
+      dispatch(addBooking({...booking}));
+      toast.success("Booking Confirmed");
+    }catch (e) {
+      console.error(e.message);
+      toast.error(e.message);
+    }
+  }
   // Calculate the number of nights
   const date1 = new Date(checkin);
   const date2 = new Date(checkout);
@@ -37,20 +54,20 @@ const ConfirmAndPay = () => {
   const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) || 0;
 
   // Calculate prices
-  const basePrice = BookingDetail?.price || 0;
+  const basePrice = BookingDetails?.price || 0;
   const airbnbFee = Math.floor((5 / 100) * basePrice);
   const taxes = Math.floor((18 / 100) * basePrice);
   const totalPrice = basePrice + airbnbFee + taxes;
 
   // Guard against missing booking details
-  if (!booking) {
-    return (
-      <h1 className="text-center text-xl md:text-3xl font-bold">
-        Booking not found. Try again later.
-      </h1>
-    );
-  }
-
+  // if (!booking) {
+  //   return (
+  //     <h1 className="text-center text-xl md:text-3xl font-bold">
+  //       Booking not found. Try again later.
+  //     </h1>
+  //   );
+  // }
+  
   return (
     <div className="min-h-screen py-10 px-6 flex justify-center">
       <div className="w-full gap-3 max-w-5xl flex flex-col md:flex-row md:gap-5 justify-between items-center">
@@ -143,7 +160,7 @@ const ConfirmAndPay = () => {
           {/* Confirm Button */}
           <button
             className="mx-auto my-8 flex rounded-xl bg-primary py-2 px-10 md:px-14 text-md md:text-lg font-semibold text-white"
-            onClick={() => toast.success("Payment Successful")}
+            onClick={bookingHandler}
           >
             Confirm and Pay
           </button>
@@ -157,8 +174,8 @@ const ConfirmAndPay = () => {
               alt="Listing Thumbnail"
               className="h-40 w-60 object-cover rounded-md"
             />
-            <h2 className="text-lg font-medium mt-4">{place?.title || "No title available"}</h2>
-            <p className="text-gray-600">{place?.location || "No location provided"}</p>
+            <h2 className="text-lg font-medium mt-4">{placeDetail?.title || "No title available"}</h2>
+            <p className="text-gray-600">{placeDetail?.location || "No location provided"}</p>
           </div>
 
           {/* Price Details */}
@@ -167,7 +184,7 @@ const ConfirmAndPay = () => {
             <div className="space-y-2">
               <div className="flex justify-between">
                 <p>
-                  {place?.price} x {diffDays} night
+                  {placeDetail?.price} x {diffDays} night
                 </p>
                 <p>{basePrice}</p>
               </div>

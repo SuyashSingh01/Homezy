@@ -5,7 +5,6 @@ import { toast } from 'react-toastify';
 import DatePickerWithRange from './DatePickerWithRange.jsx';
 import { useDispatch } from 'react-redux';
 import { setLoading } from '../Redux/slices/AuthSlice';
-import { addBooking } from '../Redux/slices/BookingSlice';
 import {useSelector} from 'react-redux'
 
 const BookingWidget = ({ place }) => {
@@ -13,7 +12,7 @@ const BookingWidget = ({ place }) => {
   const navigate=useNavigate();
   
   const { user } = useSelector((state)=>state.auth);
-  // console.log("userinBookingWid",user);
+  console.log("userinBookingWid",user);
   // console.log("bookingplace",place);
 
   const [dateRange, setDateRange] = useState({ from: null, to: null });
@@ -40,6 +39,7 @@ const BookingWidget = ({ place }) => {
     if (!user) {
       toast.error('Please sign in to book place ');
       navigate('/register')
+      return ;
     }
 
     // BOOKING DATA VALIDATION
@@ -57,8 +57,8 @@ const BookingWidget = ({ place }) => {
     // send the data to backend server
     dispatch(setLoading(true));
     try {
-      const BookingDetails= {
-        checkIn: dateRange.from.toISOString(), // Convert Date to ISO string
+      const bookingDetail= {
+        checkIn: dateRange.from.toISOString(),
         checkOut: dateRange.to.toISOString(),
         noOfGuests,
         name,
@@ -68,18 +68,21 @@ const BookingWidget = ({ place }) => {
       };
       // here the id should be the same as  the place id 
    
-      dispatch(addBooking(BookingDetails));
-      const bookingDetail = {
-        BookingDetails: BookingDetails,
-        place: place,
+      // dispatch(addBooking(BookingDetails));
+      const BookingDetails = {
+        booking:bookingDetail,
+        placeDetail: place,
       };
     
-      navigate(`/account/bookings/${id}/confirm-pay/`, { state: { bookingDetail } });
+      navigate(`/account/bookings/${id}/confirm-pay/`, { state: {
+        BookingDetails,
+        } 
+      });
 
 
       // take out the booking id from server response created in database
       // const bookingId = response.data.booking._id;
-      // navigate(`/account/bookings/${bookingId}`);
+
     } catch (error) {
       toast.error('Something went wrong!');
       console.log('Error: ', error.message);

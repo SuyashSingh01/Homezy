@@ -39,7 +39,7 @@ const Login = () => {
       const userDetails = {
         name: response?.user?.name,
         email: formData.email,
-        uid: result?.user?.uid,
+        uid: response?.user?.uid,
     };
       dispatch(setToken(response?.user?.refreshToken));
 

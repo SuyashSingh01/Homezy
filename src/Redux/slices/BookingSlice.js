@@ -4,20 +4,21 @@ const bookingSlice = createSlice({
   name: "bookings",
   initialState: {
     bookings: [],
+    reviews: [],
   },
   reducers: {
     addBooking(state, action) {
       const { place, checkIn: newCheckIn, checkOut: newCheckOut } = action.payload;
-    
+
       // Convert check-in and check-out times to Date objects
       const newCheckInDate = new Date(newCheckIn);
       const newCheckOutDate = new Date(newCheckOut);
-    
+
       // Check if the place with same id has an overlapping booking
       const isOverlapping = state.bookings.some((booking) => {
         const existingCheckIn = new Date(booking.checkIn);
         const existingCheckOut = new Date(booking.checkOut);
-    
+
         // Check for overlapping dates for the same place ID
         return (
           booking.place === place &&
@@ -34,17 +35,20 @@ const bookingSlice = createSlice({
         throw new Error("Booking conflict! Place is already booked in this time range.");
       }
     },
-    
+
     cancelBooking(state, action) {
       state.bookings = state.bookings.filter(
         (booking) => booking.id !== action.payload
       );
     },
     setBookings(state, action) {
-      state.bookings = action.payload; 
+      state.bookings = action.payload;
     },
-  },
-});
+    addReviews(state, action) {
+      state.reviews.push(action.payload);
+    }
+    },
+  });
 
-export const { addBooking, cancelBooking, setBookings } = bookingSlice.actions;
+export const { addBooking, cancelBooking, setBookings,addReviews } = bookingSlice.actions;
 export default bookingSlice.reducer;

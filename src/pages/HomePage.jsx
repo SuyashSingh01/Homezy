@@ -1,4 +1,3 @@
-// import useFetch from '../utility/useFetch';
 import Spinner from '../components/Spinner';
 import PlaceCard from '../components/PlaceCard';
 import {useSelector } from 'react-redux';
@@ -17,7 +16,7 @@ const HomePage = () => {
   const { listingData,searchItem }=useContext(ListingsContext);
   const listings= [...listingData];
 
-  console.log("listingdata", listings);
+  // console.log("listingdata", listings);
 
   if (loading) {
     return (
@@ -32,7 +31,7 @@ const HomePage = () => {
       {listings && listings.length > 0 ? (
         listings.filter(
           (val) => {
-            console.log(val)
+            // console.log(val)
             if (searchItem === "") {
               return val;
             } else if (val.title.toLowerCase().includes(searchItem.toLowerCase())) {
