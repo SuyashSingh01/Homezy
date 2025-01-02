@@ -10,7 +10,7 @@ lerna-debug.log*
 # need to add these when using  the firebase package
 src/config/firebaseconfig.js
 
-src/.env
+.env
 node_modules
 dist
 dist-ssr
