@@ -3,16 +3,14 @@ import React, {useState } from 'react';
 const PlaceGallery = ({place}) => {
 
   const [showAllPhotos, setShowAllPhotos] = useState(false);
-
-  // console.log("placegallery", place);
-
+  // console.log('place',place);
   if (showAllPhotos) {
     return (
-      <div className=" overflow-auto bg-white text-white">
+      <div className=" fixed inset-0 z-10 overflow-auto bg-white text-white">
         <div className="grid gap-4 bg-white px-2 py-20 md:p-8">
           <div>
             <button
-              className="fixed right-2 top-8 flex gap-1 rounded-2xl bg-white py-2 px-4 text-black shadow-sm shadow-gray-500 md:right-12"
+              className="fixed right-2 flex gap-1 rounded-2xl bg-white py-2 px-4 text-black shadow-sm shadow-gray-500 md:right-16 top-20"
               onClick={() => setShowAllPhotos(false)}
             >
               <svg
@@ -42,17 +40,17 @@ const PlaceGallery = ({place}) => {
     );
   }
   return (
-    <div className="">
+    <div className="relative">
       {/* Medium devices */}
-      <div className="hidden h-[400px] max-h-[450px] grid-cols-4 gap-2 overflow-hidden rounded-[12px] md:grid">
+      <div className="h-[400px] max-h-[450px] grid-cols-4 gap-2 overflow-hidden rounded-[12px] md:grid">
         {/* column 1 */}
         <div className="col-span-2 overflow-hidden">
-          {place?.photos?.[0] && (
+          {place.photos?.[0] && (
             <div className="h-full w-full overflow-hidden bg-red-200">
               <img
                 onClick={() => setShowAllPhotos(true)}
                 className="h-full w-full cursor-pointer object-cover"
-                src={place?.photos?.[0]}
+                src={place.photos[0]}
                 alt=""
               />
             </div>
@@ -62,25 +60,25 @@ const PlaceGallery = ({place}) => {
         <div className="col-span-1 overflow-hidden">
           {/* row grid inside column 2 */}
           <div className="grid h-full grid-rows-2 gap-2">
-            {place?.photos?.[1] && (
+            {place.photos?.[1] && (
               // row 1
               <div className="bg-gray-200">
                 <img
                   onClick={() => setShowAllPhotos(true)}
                   className="h-full w-full cursor-pointer object-cover"
-                  src={place?.photos[1]}
+                  src={place.photos[1]}
                   alt=""
                 />
               </div>
             )}
 
-            {place?.photos?.[2] && (
+            {place.photos?.[2] && (
               // row 2
               <div className="bg-gray-200">
                 <img
                   onClick={() => setShowAllPhotos(true)}
                   className="h-full w-full cursor-pointer object-cover"
-                  src={place?.photos[2]}
+                  src={place.photos[2]}
                   alt=""
                 />
               </div>
@@ -91,25 +89,25 @@ const PlaceGallery = ({place}) => {
         <div className="col-span-1 overflow-hidden">
           {/* row grid inside column 3 */}
           <div className="grid h-full grid-rows-2 gap-2">
-            {place?.photos?.[3] && (
+            {place.photos?.[3] && (
               // row 1
               <div className="h-full bg-gray-200">
                 <img
                   onClick={() => setShowAllPhotos(true)}
                   className="h-full w-full cursor-pointer object-cover"
-                  src={place?.photos[3]}
+                  src={place.photos[3]}
                   alt=""
                 />
               </div>
             )}
 
-            {place?.photos?.[4] && (
+            {place.photos?.[4] && (
               // row 2
               <div className="h-full bg-gray-200">
                 <img
                   onClick={() => setShowAllPhotos(true)}
                   className="h-full w-full cursor-pointer object-cover"
-                  src={place?.photos[4]}
+                  src={place.photos[4]}
                   alt=""
                 />
               </div>
@@ -117,21 +115,6 @@ const PlaceGallery = ({place}) => {
           </div>
         </div>
       </div>
-
-      {/* Mobile devices */}
-      <div className="flex overflow-hidden rounded-[12px] md:hidden">
-        {place?.photos?.[0] && (
-          <div className="h-full">
-            <img
-              onClick={() => setShowAllPhotos(true)}
-              className="h-full cursor-pointer object-cover"
-              src={place?.photos?.[0]}
-              alt=""
-            />
-          </div>
-        )}
-      </div>
-
       <button
         className="absolute bottom-2 right-2 flex gap-1 rounded-xl bg-white py-2 px-4 shadow-md shadow-gray-500 "
         onClick={() => setShowAllPhotos(true)}

@@ -1,7 +1,7 @@
 import React from "react";
 import { Select, Button, Input } from "antd";
-import { useLocation, useParams} from "react-router-dom";
-import { useSelector ,useDispatch} from "react-redux";
+import { useLocation, useParams, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import { format } from "date-fns";
 import { toast } from "react-toastify";
 import { addBooking } from "../Redux/slices/BookingSlice";
@@ -10,20 +10,14 @@ const ConfirmAndPay = () => {
   const params = useParams();
   const bookingid = params.id;
   const location = useLocation();
-  const dispatch=useDispatch();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { bookings } = useSelector((state) => state.bookings);
   const { BookingDetails } = location.state || {};
   const { placeDetail, booking } = BookingDetails || {};
-  console.log("locationstate",BookingDetails);
-  console.log("bookingsinRedux",bookings);
+
   // Find the existience we can do it in backend booking
 
-  // let  booking;
-  // if(bookings){
-  // booking = bookings.find((book) => parseInt(book.place) === parseInt(bookingid));
-  // }
-
-  // Fallback values for check-in and check-out dates
   let checkin = "N/A";
   let checkout = "N/A";
 
@@ -36,13 +30,14 @@ const ConfirmAndPay = () => {
       checkout = format(checkOutDate, "yyyy-MM-dd");
     }
   }
-  
-  const bookingHandler= async()=>{
+
+  const bookingHandler = async () => {
     try {
       // add  the booking in the backend
-      dispatch(addBooking({...booking}));
+      dispatch(addBooking({ ...booking }));
       toast.success("Booking Confirmed");
-    }catch (e) {
+      navigate('/')
+    } catch (e) {
       console.error(e.message);
       toast.error(e.message);
     }
@@ -60,14 +55,14 @@ const ConfirmAndPay = () => {
   const totalPrice = basePrice + airbnbFee + taxes;
 
   // Guard against missing booking details
-  // if (!booking) {
-  //   return (
-  //     <h1 className="text-center text-xl md:text-3xl font-bold">
-  //       Booking not found. Try again later.
-  //     </h1>
-  //   );
-  // }
-  
+  if (!booking) {
+    return (
+      <h1 className="text-center text-xl md:text-3xl font-bold">
+        Booking not found. Try again later.
+      </h1>
+    );
+  }
+
   return (
     <div className="min-h-screen py-10 px-6 flex justify-center">
       <div className="w-full gap-3 max-w-5xl flex flex-col md:flex-row md:gap-5 justify-between items-center">
@@ -153,7 +148,7 @@ const ConfirmAndPay = () => {
           <div>
             <h2 className="text-lg font-medium">Cancellation policy</h2>
             <p className="mt-4 text-sm text-gray-600">
-              Free cancellation before 19 Dec. After that, the reservation is non-refundable.
+              Free cancellation before {checkin}. After that, the reservation is non-refundable.
             </p>
           </div>
 

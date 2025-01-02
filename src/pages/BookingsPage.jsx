@@ -9,17 +9,21 @@ import { setLoading } from "../Redux/slices/AuthSlice";
 import NoTripBookedYet from "../components/NoTripBookedYet.jsx";
 
 const BookingsPage = () => {
-  const [bookings, setBookings] = useState([]);
   const { loading } = useSelector((state) => state.auth);
+  const { bookings } = useSelector((state) => state.bookings);
+  const [Bookings, setBookings] = useState(bookings || []);
   const dispatch = useDispatch();
 
   useEffect(() => {
     const getBookings = async () => {
       dispatch(setLoading(true));
       try {
+        // set the bookings from the backend
         const { data } = await axios.get("http://localhost:3001/bookings");
-        console.log("bookingsdata", data);
         setBookings(data);
+
+        // get the bookings from the redux store
+        // setBookings(bookings);
       } catch (error) {
         console.log("Error: ", error.message);
       }
@@ -35,23 +39,26 @@ const BookingsPage = () => {
       <h1 className="mb-8 text-center text-3xl font-bold text-gray-800">
         Your Bookings
       </h1>
-      {bookings?.length > 0 ? (
+      {Bookings?.length > 0 ? (
         <div className="grid gap-8 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
-          {bookings.map((booking) => (
+          {Bookings.map((booking, index) => (
             <Link
               to={`/account/bookings/${booking._id}`}
-              key={booking._id}
+              key={booking._id || index}
               className="block transform overflow-hidden rounded-xl bg-white shadow-lg transition-all hover:scale-105 hover:shadow-2xl"
             >
               {/* Place Image */}
               <div className="relative h-40 md:h-52">
-                {booking?.place?.photos[0] && (
-                  <PlaceImg
-                    place={booking?.place}
-                    className="h-full w-full object-cover"
-                  />
+                {booking?.place?.photos?.[0] ? (
+                  <PlaceImg place={booking?.place} className="h-full w-full object-cover" />
+                ) : (
+                  <div className="h-full w-full bg-gray-200 flex items-center justify-center">
+                    <span>No Image Available</span>
+                  </div>
                 )}
               </div>
+
+
 
               {/* Booking Details */}
               <div className="p-4">

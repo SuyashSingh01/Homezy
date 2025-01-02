@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import Spinner from './Spinner'
-import BookingWidget from './BookingWidget.jsx';
-import PlaceGallery from './PlaceGallery.jsx';
 import Perks from './Perks.jsx';
+import Spinner from './Spinner';
+import Reviews from './Reviews.jsx';
+import { toast } from 'react-toastify';
+import { useParams } from 'react-router-dom';
+import PlaceGallery from './PlaceGallery.jsx';
+import BookingWidget from './BookingWidget.jsx';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLoading } from '../Redux/slices/AuthSlice';
-import { toast } from 'react-toastify';
 import AddressLink from './AddressLink.jsx';
-import Reviews from './Reviews.jsx';
 
 const PlaceDetail = () => {
 
@@ -24,7 +24,6 @@ const PlaceDetail = () => {
     try {
       const response = await axios.get(`http://localhost:3001/listings`);
       const placeDetail = response.data.find((place) => parseInt(place.id, 10) === parseInt(id, 10));
-      // console.log('pplaceDetail:', placeDetail);
       setPlace(placeDetail);
 
     } catch (e) {
@@ -41,13 +40,12 @@ const PlaceDetail = () => {
   if (loading) return <Spinner />;
   if (!place) return;
   return (
-    <div className="mt-4 overflow-x-hidden px-8 pt-20">
-      <h1 className="text-3xl mt-4 ">{place?.title}</h1>
+    <div className="mt-4 overflow-x-hidden px-8 md:pt-16">
+      <h1 className="text-3xl mt-2 ">{place?.title}</h1>
       <AddressLink className="my-2 block" placeAddress={place?.address} />
       <PlaceGallery place={place} />
-
-      <div className="mt-8 mb-8 grid grid-cols-1 gap-8 md:grid-cols-[2fr_1fr]">
-        <div className="text-balance ">
+      <div className='mt-8 mb-8 flex flex-col md:flex-row '>
+        <div className=" md:w-[65%]">
           <div className="my-4">
             <h2 className="md:text-2xl font-semibold text-xl">Description</h2>
             {place?.description}
@@ -55,7 +53,7 @@ const PlaceDetail = () => {
           Max number of guests: {place?.maxGuests}
           <Perks perks={place?.perks} />
         </div>
-        <div>
+        <div className='sm:w-full md:w-[35%] '>
         <BookingWidget place={place} />
         </div>
       </div>
@@ -67,7 +65,9 @@ const PlaceDetail = () => {
           {place?.extraInfo}
         </div>
       </div>
+      <div className='mt-4'>
       <Reviews />
+      </div>
     </div>
   )
 };

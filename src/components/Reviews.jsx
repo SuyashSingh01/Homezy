@@ -2,20 +2,17 @@ import { toast } from "react-toastify";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addReviews } from '../Redux/slices/BookingSlice';
-import { useLocation } from "react-router-dom";
 
 const Reviews = ({ placeId }) => {
 
   const dispatch = useDispatch();
-  const location=useLocation();
-  const {bookings}= useSelector(state=>state.bookings);
-  // console.log("location",typeof location.pathname);
-  // console.log("location",typeof `/place/:id`);
-
-  const { reviews } = useSelector(state => state.bookings);
+  const { reviews ,bookings} = useSelector(state => state.bookings);
   const { user } = useSelector(state => state.auth);
   const [newReview, setNewReview] = useState({ username: "", rating: 0, comment: "" });
-  const isBooked = bookings.find((booking) => booking.placeId === placeId);
+
+  const isBooked = bookings.find((booking) => {
+    return booking.place === placeId
+  });
 
   const handleSubmitReview = (e) => {
     e.preventDefault();
@@ -39,9 +36,9 @@ const Reviews = ({ placeId }) => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6 mt-8">
+    <div className="bg-white rounded-lg shadow-lg mt-4 mb-8 py-4">
 
-      <h2 className="text-2xl font-semibold mb-4 border-b pb-2">Reviews</h2>
+      <h2 className="text-2xl font-semibold mb-4 border-b py-2">Reviews</h2>
       {/* Display Existing Reviews */}
       {reviews.length > 0 ? (
         <div className="space-y-4">

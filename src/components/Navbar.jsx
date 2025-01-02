@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation,Link} from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import SearchBar from './SearchBar.jsx';
 import { Avatar, AvatarImage } from '@radix-ui/react-avatar';
 import { useSelector } from 'react-redux';
@@ -27,10 +27,7 @@ const Navbar = () => {
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll, { passive: false });
-    console.log("insideuserside", user);
-    console.log("tokeninside", token);
-
-   // hide searchbar based on the current empty or not of searchItem
+    // hide searchbar based on the current empty or not of searchItem
     if (location?.pathname === '/') {
       setShowSearchBar(true);
     } else {
@@ -68,7 +65,7 @@ const Navbar = () => {
 
         <div
           className={`w-50  flex h-full items-center gap-2 rounded-full py-1 px-3 md:border shadow-sm ${isActive ? 'border border-slate-200 shadow-md' : ''}`}
-            onClick={() => setIsActive(!isActive)}
+          onClick={() => setIsActive(!isActive)}
         >
 
           <svg

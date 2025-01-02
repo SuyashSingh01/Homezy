@@ -12,8 +12,6 @@ const BookingWidget = ({ place }) => {
   const navigate=useNavigate();
   
   const { user } = useSelector((state)=>state.auth);
-  console.log("userinBookingWid",user);
-  // console.log("bookingplace",place);
 
   const [dateRange, setDateRange] = useState({ from: null, to: null });
 
@@ -78,11 +76,8 @@ const BookingWidget = ({ place }) => {
         BookingDetails,
         } 
       });
-
-
       // take out the booking id from server response created in database
       // const bookingId = response.data.booking._id;
-
     } catch (error) {
       toast.error('Something went wrong!');
       console.log('Error: ', error.message);
@@ -94,12 +89,12 @@ const BookingWidget = ({ place }) => {
   };
 
   return (
-    <div className=" rounded-2xl bg-white py-8 shadow-xl">
+    <div className="rounded-2xl bg-white py-8 shadow-xl">
       <div className="text-center text-xl">
         Price: <span className="font-semibold">₹{place.price}</span> / per night
       </div>
       <div className="mt-4 rounded-2xl border">
-        <div className="flex w-full ">
+        <div className="flex md:w-full">
           <DatePickerWithRange setDateRange={setDateRange} />
         </div>
         <div className="border-t py-3 px-4">

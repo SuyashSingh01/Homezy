@@ -31,7 +31,7 @@ const bookingSlice = createSlice({
         state.bookings.push(action.payload);
         console.log("New booking added:", action.payload);
       } else {
-        console.log("Booking conflict: Place already booked in this time range.");
+        // console.log("Booking conflict: Place already booked in this time range.");
         throw new Error("Booking conflict! Place is already booked in this time range.");
       }
     },

@@ -1,31 +1,35 @@
 import axios from 'axios';
+import { useSelector } from 'react-redux';
+import Spinner from '../components/Spinner.jsx';
+import InfoCard from '../components/InfoCard.jsx';
 import React, { useState, useEffect } from 'react';
 import { Link ,useNavigate } from 'react-router-dom';
-import InfoCard from '../components/InfoCard.jsx';
-import Spinner from '../components/Spinner.jsx';
-import { useSelector } from 'react-redux';
 
 const HostedPlaces = () => {
 
+  // get listings from redux
   const {listings}=useSelector((state)=> (state.listings));
   const navigate=useNavigate();
   const [places, setPlaces] = useState([]);
   const [loading, setLoading] = useState(true);
-  console.log("places:in redux",places);
+
+
+  const listplace=JSON.parse(localStorage.getItem('listings'));
 
   useEffect(() => {
     const getPlaces = async () => {
       try {
+        // get from backend
         const { data } = await axios.get('http://localhost:3001/hosted');
         // setPlaces(data);
-        const listplace=JSON.parse(localStorage.getItem('listings'));
 
+        // currently using available data from api
         setPlaces(listplace);
-        setLoading(false);
-        
+
       } catch (error) {
         console.log(error.message);
       }
+      setLoading(false);
     };
      getPlaces();   
 
@@ -41,7 +45,7 @@ const HostedPlaces = () => {
       <div className="mx-4 mt-4 flex flex-col justify-center gap-4 w-full">
         {places.length > 0 &&
           places.map((place,index) => {
-            return <InfoCard place={place} key={index} navigate={navigate} />
+            return <InfoCard setPlaces={setPlaces} place={place} key={index} navigate={navigate} />
           })}
       </div>
       <div className="text-center mt-4 mb-4 ">

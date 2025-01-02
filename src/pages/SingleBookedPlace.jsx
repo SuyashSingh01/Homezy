@@ -65,10 +65,10 @@ const SingleBookedPlace = () => {
               </div>
             </div>
           </div>
-          <Reviews placeId={id}/>
+          <Reviews placeId={id} />
         </div>
       ) : (
-        <ExploreCard title={"Booked Places"} explore={"You haven’t Booked any places yet. Explore and Book your favorites place!"}/>
+        <ExploreCard title={"Booked Places"} explore={"You haven’t Booked any places yet. Explore and Book your favorites place!"} />
       )}
     </div>
   );

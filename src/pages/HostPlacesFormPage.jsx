@@ -1,24 +1,24 @@
 
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import Perks from '../components/Perks.jsx';
-import PerksWidget from '../components/PerksWidget.jsx';
+import { useDispatch } from 'react-redux';
 import Spinner from '../components/Spinner';
+import Perks from '../components/Perks.jsx';
+import React, { useEffect, useState } from 'react';
+import PerksWidget from '../components/PerksWidget.jsx';
+import { useNavigate, useParams } from 'react-router-dom';
 import MultiplePhotosUploader from './MultiplePhotosUploader.jsx';
-import { useDispatch, useSelector } from 'react-redux';
 import { addListing, updateListing } from '../Redux/slices/ListingSlice.js';
 
 const HostPlacesFormPage = () => {
+  
   const { id } = useParams();
-  console.log('HostPlacesFormPage id:', id);
+
   const place = JSON.parse(localStorage.getItem('listing'));
   const [loading, setLoading] = useState(false);
   const [fileList, setFileList] = useState([]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  // const { listings } = useSelector((state) => (state.listings));  // use the listings in redux store
 
   const [formData, setFormData] = useState({
     title: place?.title || '',
@@ -144,7 +144,7 @@ const HostPlacesFormPage = () => {
           // dispatch(addListing(placeData));
         }
         navigate('/account/places');
-        console.log('existing listings:', existslistings);
+        // console.log('existing listings:', existslistings);
         toast.success('Place saved successfully!');
       } catch (e) {
         console.log('Error: ', e.message);

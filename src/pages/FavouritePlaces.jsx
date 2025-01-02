@@ -1,19 +1,14 @@
-import React, {useContext } from "react";
+import React, { useContext } from "react";
 import { useSelector } from "react-redux";
 import PlaceCard from "../components/PlaceCard";
-import ExploreCard from "../components/ExploreCard.jsx"; 
-import {ListingsContext} from "../context/ListingsContext"
+import ExploreCard from "../components/ExploreCard.jsx";
+import { ListingsContext } from "../context/ListingsContext"
 
 const LikedPlacesPage = () => {
   const likedPlaces = useSelector((state) => state.listings.favorites); // IDs of liked places
   // const [likedListings, setLikedListings] = useState(likedPlaces); // Initialize as an empty array
-  const {listingData} =useContext(ListingsContext);
-
-  
+  const { listingData } = useContext(ListingsContext);
   const likedListings = listingData.filter((place) => likedPlaces.includes(place.id));
-
-
-  console.log("likedListings", likedListings);
 
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 md:px-8 lg:px-16">
@@ -30,7 +25,7 @@ const LikedPlacesPage = () => {
           </div>
         </>
       ) : (
-        <ExploreCard title={"Liked Place"} explore={"You haven’t liked any places yet. Explore and add your favorites!"}/>
+        <ExploreCard title={"Liked Place"} explore={"You haven’t liked any places yet. Explore and add your favorites!"} />
       )}
     </div>
   );
