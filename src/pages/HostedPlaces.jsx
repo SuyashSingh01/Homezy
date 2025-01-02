@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-import Spinner from '../components/Spinner.jsx';
-import InfoCard from '../components/InfoCard.jsx';
+import HostedSkeleton from '../components/Skeleton/HostedSkeleton.jsx';
+import InfoCard from '../components/Card/InfoCard.jsx';
 import React, { useState, useEffect } from 'react';
 import { Link ,useNavigate } from 'react-router-dom';
 
@@ -34,13 +34,16 @@ const HostedPlaces = () => {
      getPlaces();   
 
   }, []);
-
   if (loading) {
-    return <Spinner />;
+    <div className="mx-4 mt-4 flex flex-col justify-center gap-4 ">
+       {new Array(12).map((_,index) => {
+            return <HostedSkeleton key={index}/>;
+        })}
+  </div>
   }
 
   return (
-    <div className='mt-4 mb-8'>
+    <div className='mt-4 mb-8' >
       <h1 className='font-semibold text-3xl mt-4 mb-4 text-center'>Your Hosted Places</h1>
       <div className="mx-4 mt-4 flex flex-col justify-center gap-4 w-full">
         {places.length > 0 &&

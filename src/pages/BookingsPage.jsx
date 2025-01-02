@@ -1,12 +1,12 @@
 import axios from "axios";
 import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import PlaceImg from "../components/PlaceImg.jsx";
-import BookingDates from "../components/BookingDates";
-import Spinner from "../components/Spinner";
+import PlaceImg from "../components/common/PlaceImg.jsx";
+import BookingDates from "../components/common/BookingDates.jsx";
+import Spinner from "../components/common/Spinner.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoading } from "../Redux/slices/AuthSlice";
-import NoTripBookedYet from "../components/NoTripBookedYet.jsx";
+import NoTripBookedYet from "../components/common/NoTripBookedYet.jsx";
 
 const BookingsPage = () => {
   const { loading } = useSelector((state) => state.auth);

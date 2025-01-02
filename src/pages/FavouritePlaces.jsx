@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { useSelector } from "react-redux";
-import PlaceCard from "../components/PlaceCard";
-import ExploreCard from "../components/ExploreCard.jsx";
+import PlaceCard from "../components/Card/PlaceCard.jsx";
+import ExploreCard from "../components/common/ExploreCard.jsx";
 import { ListingsContext } from "../context/ListingsContext"
 
 const LikedPlacesPage = () => {

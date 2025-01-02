@@ -1,5 +1,5 @@
 import React from 'react';
-import PlaceImg from './PlaceImg.jsx';
+import PlaceImg from '../common/PlaceImg.jsx';
 
 const InfoCard = ({ place, navigate, index, setPlaces }) => {
 
@@ -17,8 +17,11 @@ const InfoCard = ({ place, navigate, index, setPlaces }) => {
     setPlaces(getHostedlisting);
 
   }
+  const requestHandler=()=>{
+    navigate('/account/hosted/bookings');
+  }
   return (
-    <div className="my-3 flex cursor-pointer flex-col md:flex-row gap-4 rounded-2xl bg-gray-100 p-4 transition-all hover:bg-gray-300 mx-auto " key={index}>
+    <div className="my-3 flex flex-col md:flex-row gap-4 rounded-2xl bg-gray-100 p-4 transition-all hover:bg-gray-300 mx-auto " key={index}>
 
       <PlaceImg place={place} className='w-full rounded-md' />
       <div className='flex flex-col gap-2  p-2 md:p-4 rounded-md'>
@@ -32,8 +35,10 @@ const InfoCard = ({ place, navigate, index, setPlaces }) => {
           <p className='text-sm md:text-base'>No. of Booking:{place?.booked}</p>
         </div>
         <div className='flex gap-4 md:gap-8'>
-          <button className='bg-primary rounded-md p-2 w-32 text-white' onClick={editHandler}>Edit</button>
-          <button className='bg-primary rounded-md p-2 w-32 text-white' onClick={deletHandler}>Delete</button>
+          <button className='bg-primary cursor-pointer rounded-md p-2 w-32 text-white' onClick={editHandler}>Edit</button>
+          <button className='bg-primary cursor-pointer rounded-md p-2 w-32 text-white' onClick={deletHandler}>Delete</button>
+          <button className='bg-primary cursor-pointer rounded-md p-2 w-32 text-white' onClick={requestHandler}>See-Request</button>
+
         </div>
       </div>
     </div>

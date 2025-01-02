@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { addFavorite, removeFavorite } from "../Redux/slices/ListingSlice";
+import { addFavorite, removeFavorite } from "../../Redux/slices/ListingSlice";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
-import img1 from "../assets/pexels-pixabay-533769.jpg"
+import img1 from "../../assets/pexels-pixabay-533769.jpg"
 
 const PlaceCard = ({ place }) => {
 

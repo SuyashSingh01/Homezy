@@ -4,7 +4,7 @@ import { differenceInDays } from 'date-fns';
 import { toast } from 'react-toastify';
 import DatePickerWithRange from './DatePickerWithRange.jsx';
 import { useDispatch } from 'react-redux';
-import { setLoading } from '../Redux/slices/AuthSlice';
+import { setLoading } from '../../Redux/slices/AuthSlice.js';
 import {useSelector} from 'react-redux'
 
 const BookingWidget = ({ place }) => {
@@ -123,6 +123,7 @@ const BookingWidget = ({ place }) => {
             type="tel"
             name="phone"
             value={phone}
+            minLength={10}
             onChange={handleBookingData}
           />
         </div>

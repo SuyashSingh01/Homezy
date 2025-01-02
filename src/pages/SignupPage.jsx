@@ -5,7 +5,7 @@ import { Link,useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useSelector, useDispatch } from 'react-redux';
 import { setUserData, setLoading, setToken } from '../Redux/slices/AuthSlice';
-import Spinner from '../components/Spinner';
+import Spinner from '../components/common/Spinner';
 import {createUserWithEmailAndPassword} from 'firebase/auth'; 
 import { auth } from '../utility/Firebase';
 const SignupPage = () => {

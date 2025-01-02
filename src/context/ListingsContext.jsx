@@ -15,19 +15,6 @@ export const ListingsProvider = ({ children }) => {
   const [searchItem, setSearchItem] = useState('');
   const [listingData, setlistingData] = useState([]);
 
-  // we can use this function to filter the data based on searchItem currently i am usi
-  // function handleSearchClick() {
-  //   console.log('handleSearchClick',listings);
-  //   if (searchItem === "") { 
-  //     return; 
-  //   }
-    // const filterBySearch = listingData.filter((item) => {
-    //   if (item?.title.toLowerCase()
-    //     .includes(searchItem.toLowerCase())) { return item; }
-    // })
-    // setlistingData(filterBySearch);
-  // }
-
   const fetchedListingData = async () => {
     dispatch(setLoading(true));
     try {

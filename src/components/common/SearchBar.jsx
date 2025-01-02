@@ -1,7 +1,8 @@
 import React ,{useContext} from 'react';
-import { ListingsContext} from '../context/ListingsContext';
+import { ListingsContext} from '../../context/ListingsContext';
 
 const SearchBar = () => {
+
 const {searchItem,setSearchItem}=useContext(ListingsContext);
 
   return (

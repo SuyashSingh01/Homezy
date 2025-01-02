@@ -2,12 +2,12 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
-import Spinner from '../components/Spinner';
-import Perks from '../components/Perks.jsx';
+import Spinner from '../components/common/Spinner.jsx';
+import Perks from '../components/PlaceDetail/Perks.jsx';
 import React, { useEffect, useState } from 'react';
-import PerksWidget from '../components/PerksWidget.jsx';
+import PerksWidget from '../components/common/PerksWidget.jsx';
 import { useNavigate, useParams } from 'react-router-dom';
-import MultiplePhotosUploader from './MultiplePhotosUploader.jsx';
+import MultiplePhotosUploader from '../components/common/MultiplePhotosUploader.jsx';
 import { addListing, updateListing } from '../Redux/slices/ListingSlice.js';
 
 const HostPlacesFormPage = () => {
@@ -108,7 +108,7 @@ const HostPlacesFormPage = () => {
 
   }, [id]);
 
-  const preInput = (header, description) => {
+  const label = (header, description) => {
     return (
       <>
         <h2 className="mt-4 text-2xl">{header}</h2>
@@ -158,9 +158,9 @@ const HostPlacesFormPage = () => {
   }
 
   return (
-    <div className="p-4">
-      <form onSubmit={savePlace}>
-        {preInput(
+    <div className="flex min-h-screen min-w-screen items-center justify-center bg-gray-100">
+      <form onSubmit={savePlace} className='mx-4'>
+        {label(
           'Title',
           'Title for your place. Should be short and catchy as in advertisement',
         )}
@@ -172,7 +172,7 @@ const HostPlacesFormPage = () => {
           placeholder="title, for example: My lovely apt"
         />
 
-        {preInput('Address', 'Address to this place')}
+        {label('Address', 'Address to this place')}
         <input
           type="text"
           name="address"
@@ -181,23 +181,23 @@ const HostPlacesFormPage = () => {
           placeholder="address"
         />
 
-        {preInput('Photos', 'Upload the pics of your place')}
+        {label('Photos', 'Upload the pics of your place')}
         <MultiplePhotosUploader
           fileList={fileList}
           setFileList={setFileList}
         />
-        {preInput('Perks', ' Select all the perks of your place')}
+        {label('Perks', ' Select all the perks of your place')}
         {( id == undefined) ?
           (<PerksWidget selected={perks} handleFormData={handleFormData} />)
           : 
           (<Perks selected={perks} handleFormData={handleFormData} />)}
-        {preInput('Description', 'Tell us more about your place')}
+        {label('Description', 'Tell us more about your place')}
         <textarea
           value={description}
           name="description"
           onChange={handleFormData}
         />
-        {preInput(
+        {label(
           'Number of guests & Price',
           // 'add check in and out times, remember to have some time window forcleaning the room between guests. '
           'Specify the maximum number of guests so that the client stays within the limit.',
@@ -224,7 +224,7 @@ const HostPlacesFormPage = () => {
             />
           </div>
         </div>
-        {preInput('Extra info', 'house rules, etc ')}
+        {label('Extra info', 'house rules, etc ')}
         <textarea
           value={extraInfo}
           name="extraInfo"

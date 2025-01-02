@@ -1,14 +1,11 @@
-import Spinner from '../components/Spinner';
-import PlaceCard from '../components/PlaceCard';
+import PlaceCard from '../components/Card/PlaceCard';
 import {useSelector } from 'react-redux';
 import { ListingsContext } from '../context/ListingsContext';
 import { useContext } from 'react';
+import HostedSkeleton from '../components/Skeleton/HostedSkeleton';
 
 const HomePage = () => {
 
-  // const ApiUrl = "https://jsonplaceholder.typicode.com/posts"; // Mock API URL
-  // const { data,error } = useFetch(ApiUrl); // Fetch data
- 
   // Access loading state from Redux
   const { loading } = useSelector((state) => state.auth);
   // const {listings }=useSelector((state)=>state.listings);
@@ -16,13 +13,13 @@ const HomePage = () => {
   const { listingData,searchItem }=useContext(ListingsContext);
   const listings= [...listingData];
 
-  // console.log("listingdata", listings);
-
   if (loading) {
     return (
-      <div className="flex flex-col justify-center items-center">
-        <Spinner />
-      </div>
+      <div className="px-6 grid xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 sm:px-10 xl:px-[80px] gap-6 mt-2">
+      {new Array (12).map((_, index) => (
+        <HostedSkeleton key={index} />
+      ))}
+    </div>
     );
   }
 

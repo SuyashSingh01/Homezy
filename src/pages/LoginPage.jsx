@@ -5,7 +5,7 @@ import { auth } from '../utility/Firebase';
 import { useSelector, useDispatch } from 'react-redux';
 import { setToken, setLoading, setUserData } from '../Redux/slices/AuthSlice';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import Spinner from '../components/Spinner';
+import Spinner from '../components/common/Spinner';
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });

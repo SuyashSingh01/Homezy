@@ -1,12 +1,12 @@
 import axios from 'axios';
-import Reviews from '../components/Reviews';
-import Spinner from '../components/Spinner';
+import Reviews from '../components/common/Reviews';
+import Spinner from '../components/common/Spinner';
 import { useParams } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
-import AddressLink from '../components/AddressLink';
-import BookingDates from '../components/BookingDates';
-import PlaceGallery from '../components/PlaceGallery';
-import ExploreCard from '../components/ExploreCard';
+import AddressLink from '../components/PlaceDetail/AddressLink';
+import BookingDates from '../components/common/BookingDates';
+import PlaceGallery from '../components/common/PlaceGallery';
+import ExploreCard from '../components/common/ExploreCard';
 
 const SingleBookedPlace = () => {
 

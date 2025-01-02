@@ -1,7 +1,7 @@
 import { toast } from "react-toastify";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addReviews } from '../Redux/slices/BookingSlice';
+import { addReviews } from '../../Redux/slices/BookingSlice';
 
 const Reviews = ({ placeId }) => {
 

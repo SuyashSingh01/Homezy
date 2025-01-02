@@ -1,14 +1,14 @@
 import axios from 'axios';
 import Perks from './Perks.jsx';
-import Spinner from './Spinner';
-import Reviews from './Reviews.jsx';
+import Spinner from '../common/Spinner.jsx';
+import Reviews from '../common/Reviews.jsx';
 import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
-import PlaceGallery from './PlaceGallery.jsx';
+import PlaceGallery from '../common/PlaceGallery.jsx';
 import BookingWidget from './BookingWidget.jsx';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setLoading } from '../Redux/slices/AuthSlice';
+import { setLoading } from '../../Redux/slices/AuthSlice';
 import AddressLink from './AddressLink.jsx';
 
 const PlaceDetail = () => {
